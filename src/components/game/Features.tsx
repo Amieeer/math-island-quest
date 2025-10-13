@@ -20,6 +20,7 @@ const features = [
     description: "Unlock achievements, collect stars, and progress through exciting islands",
     gradient: "gradient-sunset",
     glow: true,
+    iconColor: "text-yellow-400",
   },
   {
     icon: Sparkles,
@@ -54,7 +55,7 @@ export function Features() {
                 <IslandCard className="h-full hover:scale-105 transition-transform duration-300">
                   <div className="space-y-4">
                     <div className={`w-16 h-16 rounded-xl bg-${feature.gradient} flex items-center justify-center shadow-island ${feature.glow ? 'animate-pulse shadow-glow' : ''}`}>
-                      <Icon className="w-8 h-8 text-primary-foreground" />
+                      <Icon className={`w-8 h-8 ${(feature as any).iconColor || 'text-primary-foreground'}`} />
                     </div>
                     <h3 className="text-xl font-bold text-card-foreground">
                       {feature.title}

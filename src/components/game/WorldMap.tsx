@@ -13,8 +13,12 @@ import { LevelPlayer } from "@/components/game/LevelPlayer";
 import { grade1Levels, Level } from "@/data/grade1-levels";
 import { grade2Levels } from "@/data/grade2-levels";
 import { grade3Levels } from "@/data/grade3-levels";
+import { grade4Levels } from "@/data/grade4-levels";
+import { grade5Levels } from "@/data/grade5-levels";
+import { grade6Levels } from "@/data/grade6-levels";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 import island1 from "@/assets/island-1.png";
 import island2 from "@/assets/island-2.png";
 import island3 from "@/assets/island-3.png";
@@ -66,14 +70,36 @@ const baseIslands: Island[] = [
     stars: 0,
   },
   {
-    id: "4",
-    name: "Mystery Peaks",
-    description: "Challenge yourself with advanced problems",
-    modalDescription: "Welcome to Mystery Peaks! ⛰️ Unlock the secrets of advanced mathematics!",
+    id: "grade4",
+    name: "Lost Temples",
+    description: "Master multi-digit multiplication",
+    modalDescription: "Welcome to Lost Temples! 🏛️ Explore the Multiplication Mines and unlock the secrets of multi-digit multiplication!",
     grade: 4,
-    domain: "Advanced Math",
-    status: "locked",
+    domain: "Number & Operations in Base Ten",
+    status: "unlocked",
     image: island1,
+    stars: 0,
+  },
+  {
+    id: "grade5",
+    name: "Ancient Ruins",
+    description: "Conquer fractions with unlike denominators",
+    modalDescription: "Welcome to Ancient Ruins! 🏺 Navigate the Fraction Asteroid Field and master adding and subtracting fractions!",
+    grade: 5,
+    domain: "Number & Operations—Fractions",
+    status: "unlocked",
+    image: island2,
+    stars: 0,
+  },
+  {
+    id: "grade6",
+    name: "Space Stations",
+    description: "Unlock the power of ratios and proportions",
+    modalDescription: "Welcome to Space Stations! 🚀 Step into the Ratio Research Lab and discover the power of proportional reasoning!",
+    grade: 6,
+    domain: "Ratios and Proportional Relationships",
+    status: "unlocked",
+    image: island3,
     stars: 0,
   },
 ];
@@ -84,7 +110,8 @@ export function WorldMap() {
   const [selectedLevel, setSelectedLevel] = useState<Level | null>(null);
   const [progress, setProgress] = useState<Record<string, number>>({});
   const [islands, setIslands] = useState<Island[]>(baseIslands);
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -121,10 +148,18 @@ export function WorldMap() {
 
   const handleLevelComplete = (score: number) => {
     setIsPlaying(false);
-    if (selectedLevel) {
-      // Navigate to summary page
-      const percentage = Math.round((score / 10) * 100);
-      window.location.href = `/summary?score=${score}&total=10&levelId=${selectedLevel.id}&difficulty=${selectedLevel.difficulty}`;
+    if (selectedLevel && profile) {
+      // Navigate to summary page using React Router
+      navigate('/summary', {
+        state: {
+          score,
+          totalProblems: 10,
+          levelId: selectedLevel.id,
+          grade: profile.grade,
+          difficulty: selectedLevel.difficulty,
+          levelTitle: selectedLevel.title,
+        }
+      });
     }
     setSelectedLevel(null);
   };
@@ -142,6 +177,12 @@ export function WorldMap() {
         return grade2Levels;
       case "grade3":
         return grade3Levels;
+      case "grade4":
+        return grade4Levels;
+      case "grade5":
+        return grade5Levels;
+      case "grade6":
+        return grade6Levels;
       default:
         return [];
     }
