@@ -34,7 +34,8 @@ export function LevelPlayer({ level, onComplete, onExit }: LevelPlayerProps) {
 
   const handleNext = () => {
     if (isLastProblem) {
-      onComplete(score + (isCorrect ? 1 : 0));
+      const finalScore = score + (isCorrect ? 1 : 0);
+      onComplete(finalScore);
     } else {
       setAnsweredProblems([...answeredProblems, currentProblemIndex]);
       setCurrentProblemIndex(currentProblemIndex + 1);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IslandCard } from "@/components/ui/island-card";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +10,11 @@ import {
 } from "@/components/ui/dialog";
 import { Lock, Star, Trophy, Sparkles } from "lucide-react";
 import { LevelPlayer } from "@/components/game/LevelPlayer";
-import { grade1Levels } from "@/data/grade1-levels";
+import { grade1Levels, Level } from "@/data/grade1-levels";
+import { grade2Levels } from "@/data/grade2-levels";
+import { grade3Levels } from "@/data/grade3-levels";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import island1 from "@/assets/island-1.png";
 import island2 from "@/assets/island-2.png";
 import island3 from "@/assets/island-3.png";
@@ -27,7 +31,7 @@ interface Island {
   stars: number;
 }
 
-const islands: Island[] = [
+const baseIslands: Island[] = [
   {
     id: "grade1",
     name: "Addition Shore",
@@ -40,34 +44,34 @@ const islands: Island[] = [
     stars: 0,
   },
   {
-    id: "2",
-    name: "Number Beach",
-    description: "Master counting and basic operations",
-    modalDescription: "Welcome to Number Beach! 🌊 Dive into the world of numbers and operations. Practice your counting skills and become a math champion!",
+    id: "grade2",
+    name: "Ocean Floor",
+    description: "Dive deep into two-digit addition and time",
+    modalDescription: "Welcome to Ocean Floor! 🌊 Dive deep into two-digit addition, telling time, and working with money!",
     grade: 2,
     domain: "Numbers & Operations",
-    status: "locked",
+    status: "unlocked",
     image: island2,
     stars: 0,
   },
   {
-    id: "3",
-    name: "Fraction Falls",
-    description: "Dive into fractions and decimals",
-    modalDescription: "Welcome to Fraction Falls! 💧 Explore the amazing world of fractions and decimals. Split things up and put them back together!",
+    id: "grade3",
+    name: "Volcano Island",
+    description: "Explore multiplication, fractions, and area",
+    modalDescription: "Welcome to Volcano Island! 🌋 Get ready for explosive adventures in multiplication, fractions, and calculating area!",
     grade: 3,
-    domain: "Fractions",
-    status: "locked",
+    domain: "Multiplication & Fractions",
+    status: "unlocked",
     image: island3,
     stars: 0,
   },
   {
     id: "4",
-    name: "Volcano Valley",
+    name: "Mystery Peaks",
     description: "Challenge yourself with advanced problems",
-    modalDescription: "Welcome to Volcano Valley! 🌋 Get ready for explosive adventures in multiplication, division, and algebraic thinking!",
+    modalDescription: "Welcome to Mystery Peaks! ⛰️ Unlock the secrets of advanced mathematics!",
     grade: 4,
-    domain: "Algebra",
+    domain: "Advanced Math",
     status: "locked",
     image: island1,
     stars: 0,
@@ -77,7 +81,31 @@ const islands: Island[] = [
 export function WorldMap() {
   const [selectedIsland, setSelectedIsland] = useState<Island | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
+  const [selectedLevel, setSelectedLevel] = useState<Level | null>(null);
+  const [progress, setProgress] = useState<Record<string, number>>({});
+  const [islands, setIslands] = useState<Island[]>(baseIslands);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      // Fetch user progress
+      const fetchProgress = async () => {
+        const { data } = await supabase
+          .from("progress")
+          .select("*")
+          .eq("user_id", user.id);
+
+        if (data) {
+          const progressMap: Record<string, number> = {};
+          data.forEach((p) => {
+            progressMap[p.level_id] = p.score;
+          });
+          setProgress(progressMap);
+        }
+      };
+      fetchProgress();
+    }
+  }, [user]);
 
   const handleIslandClick = (island: Island) => {
     if (island.status !== "locked") {
@@ -85,16 +113,20 @@ export function WorldMap() {
     }
   };
 
-  const handleStartAdventure = () => {
+  const handleStartAdventure = (level: Level) => {
+    setSelectedLevel(level);
     setSelectedIsland(null);
     setIsPlaying(true);
   };
 
   const handleLevelComplete = (score: number) => {
     setIsPlaying(false);
+    if (selectedLevel) {
+      // Navigate to summary page
+      const percentage = Math.round((score / 10) * 100);
+      window.location.href = `/summary?score=${score}&total=10&levelId=${selectedLevel.id}&difficulty=${selectedLevel.difficulty}`;
+    }
     setSelectedLevel(null);
-    // TODO: Save progress to backend
-    console.log("Level completed with score:", score);
   };
 
   const handleLevelExit = () => {
@@ -102,14 +134,35 @@ export function WorldMap() {
     setSelectedLevel(null);
   };
 
-  const currentLevel = selectedLevel
-    ? grade1Levels.find((l) => l.id === selectedLevel)
-    : null;
+  const getLevelsForIsland = (islandId: string): Level[] => {
+    switch (islandId) {
+      case "grade1":
+        return grade1Levels;
+      case "grade2":
+        return grade2Levels;
+      case "grade3":
+        return grade3Levels;
+      default:
+        return [];
+    }
+  };
 
-  if (isPlaying && currentLevel) {
+  const isLevelUnlocked = (islandId: string, difficulty: string): boolean => {
+    if (difficulty === "easy") return true;
+    
+    const levels = getLevelsForIsland(islandId);
+    const prevDifficulty = difficulty === "medium" ? "easy" : "medium";
+    const prevLevel = levels.find((l) => l.difficulty === prevDifficulty);
+    
+    if (!prevLevel) return false;
+    const prevScore = progress[prevLevel.id];
+    return prevScore !== undefined && prevScore >= 8; // 80% or higher
+  };
+
+  if (isPlaying && selectedLevel) {
     return (
       <LevelPlayer
-        level={currentLevel}
+        level={selectedLevel}
         onComplete={handleLevelComplete}
         onExit={handleLevelExit}
       />
@@ -223,39 +276,40 @@ export function WorldMap() {
               </DialogDescription>
             </DialogHeader>
 
-            {selectedIsland?.id === "grade1" && (
+            {selectedIsland && (
               <div className="space-y-4 pt-4">
                 <h4 className="font-semibold text-lg">Choose Your Challenge:</h4>
                 <div className="grid gap-3">
-                  {grade1Levels.map((level) => (
-                    <Button
-                      key={level.id}
-                      onClick={() => {
-                        setSelectedLevel(level.id);
-                        handleStartAdventure();
-                      }}
-                      variant="outline"
-                      className="justify-start h-auto py-4"
-                    >
-                      <div className="text-left">
-                        <div className="font-bold text-lg capitalize">
-                          {level.difficulty} - {level.title}
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          {level.objective}
-                        </div>
-                      </div>
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            )}
+                  {getLevelsForIsland(selectedIsland.id).map((level) => {
+                    const isUnlocked = isLevelUnlocked(selectedIsland.id, level.difficulty);
+                    const score = progress[level.id];
+                    const hasPassed = score !== undefined && score >= 8;
 
-            {selectedIsland?.id !== "grade1" && (
-              <div className="pt-4">
-                <Button className="w-full" size="lg" disabled>
-                  Coming Soon!
-                </Button>
+                    return (
+                      <Button
+                        key={level.id}
+                        onClick={() => handleStartAdventure(level)}
+                        variant="outline"
+                        className="justify-start h-auto py-4"
+                        disabled={!isUnlocked}
+                      >
+                        <div className="text-left flex-1">
+                          <div className="font-bold text-lg capitalize flex items-center gap-2">
+                            {level.difficulty} - {level.title}
+                            {!isUnlocked && <Lock className="w-4 h-4" />}
+                            {hasPassed && <Trophy className="w-4 h-4 text-accent" />}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            {level.objective}
+                            {score !== undefined && (
+                              <span className="ml-2">• Best: {score}/10</span>
+                            )}
+                          </div>
+                        </div>
+                      </Button>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </DialogContent>

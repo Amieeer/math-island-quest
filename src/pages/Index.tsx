@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Hero } from "@/components/game/Hero";
 import { Features } from "@/components/game/Features";
 import { ProblemDemo } from "@/components/game/ProblemDemo";
@@ -6,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Anchor } from "lucide-react";
 
 const Index = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen">
       {/* Navigation */}
@@ -19,10 +22,10 @@ const Index = () => {
           </div>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground hidden sm:block">Made by: Amier Ibrahim</span>
-            <Button variant="ghost">
+            <Button variant="ghost" onClick={() => navigate("/parents")}>
               For Parents
             </Button>
-            <Button>
+            <Button onClick={() => navigate("/auth")}>
               Get Started
             </Button>
           </div>
@@ -39,7 +42,7 @@ const Index = () => {
       <ProblemDemo />
 
       {/* World Map Preview */}
-      <section className="py-20 px-4 bg-background">
+      <section id="world-map" className="py-20 px-4 bg-background">
         <div className="max-w-7xl mx-auto text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
             Explore Amazing Islands

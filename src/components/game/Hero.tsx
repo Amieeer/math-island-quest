@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import heroIsland from "@/assets/hero-island.jpg";
+
 export function Hero() {
+  const navigate = useNavigate();
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 bg-cover bg-center" style={{
@@ -31,11 +34,23 @@ export function Hero() {
           
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 shadow-island">
+            <Button 
+              size="lg" 
+              className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 shadow-island"
+              onClick={() => navigate("/auth")}
+            >
               Start Your Adventure
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-6 shadow-card-soft">
+            <Button 
+              size="lg" 
+              variant="secondary" 
+              className="text-lg px-8 py-6 shadow-card-soft"
+              onClick={() => {
+                const mapSection = document.querySelector('#world-map');
+                mapSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
               Explore Islands
             </Button>
           </div>
