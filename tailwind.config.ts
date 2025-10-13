@@ -57,6 +57,27 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        ocean: {
+          deep: "hsl(var(--ocean-deep))",
+          light: "hsl(var(--ocean-light))",
+        },
+        island: {
+          sand: "hsl(var(--sand))",
+          green: "hsl(var(--tropical-green))",
+        },
+        sunset: "hsl(var(--sunset-orange))",
+        coral: "hsl(var(--coral))",
+      },
+      backgroundImage: {
+        'gradient-ocean': 'var(--gradient-ocean)',
+        'gradient-sunset': 'var(--gradient-sunset)',
+        'gradient-island': 'var(--gradient-island)',
+        'gradient-hero': 'var(--gradient-hero)',
+      },
+      boxShadow: {
+        'island': 'var(--shadow-island)',
+        'card-soft': 'var(--shadow-card)',
+        'glow': 'var(--shadow-glow)',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -80,10 +101,36 @@ export default {
             height: "0",
           },
         },
+        "float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-20px)" },
+        },
+        "wave": {
+          "0%, 100%": { transform: "translateX(0)" },
+          "50%": { transform: "translateX(20px)" },
+        },
+        "fade-in-up": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(30px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        "bounce-gentle": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float": "float 3s ease-in-out infinite",
+        "wave": "wave 4s ease-in-out infinite",
+        "fade-in-up": "fade-in-up 0.6s ease-out",
+        "bounce-gentle": "bounce-gentle 2s ease-in-out infinite",
       },
     },
   },
