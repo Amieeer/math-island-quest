@@ -1,73 +1,114 @@
-# Welcome to your Lovable project
+# Math Island Adventure 🌴
 
-## Project info
+Welcome to **Math Island Adventure**, a gamified learning platform designed to make elementary math education engaging and fun for students in grades 1-6.
 
-**URL**: https://lovable.dev/projects/c2e57b3d-fd0d-4dc8-9223-33dbbf9041a5
+## About The Project
 
-## How can I edit this code?
+Math Island Adventure transforms mathematics learning into an exciting journey through tropical islands. Each island represents different math concepts aligned with the Massachusetts Curriculum Framework, providing students with an interactive, game-based learning experience that adapts to their skill level.
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **Frontend:** React, Vite, TypeScript, Tailwind CSS
+- **UI Components:** shadcn/ui
+- **Icons:** Lucide React
+- **State Management:** TanStack Query, Zustand (planned)
+- **Animations:** Framer Motion (planned)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c2e57b3d-fd0d-4dc8-9223-33dbbf9041a5) and start prompting.
+## Features
 
-Changes made via Lovable will be committed automatically to this repo.
+- 🏝️ **Interactive World Map** - Explore themed islands representing different math domains
+- 🎯 **Adaptive Learning** - Problems adjust to student skill levels
+- ⭐ **Gamified Progress** - Earn stars, unlock achievements, and track progress
+- 📚 **Standards-Aligned** - Content matched to Massachusetts math standards
+- 🎨 **Engaging Visuals** - Beautiful, tropical-themed interface with animations
 
-**Use your preferred IDE**
+## Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Node.js (v20+)
+- npm or pnpm
 
-Follow these steps:
+### Installation
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. Clone the repository
+   ```sh
+   git clone <YOUR_GIT_URL>
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. Navigate to the project directory
+   ```sh
+   cd <YOUR_PROJECT_NAME>
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+3. Install dependencies
+   ```sh
+   npm install
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+4. Start the development server
+   ```sh
+   npm run dev
+   ```
+
+5. Open your browser and navigate to `http://localhost:5173`
+
+## Project Structure
+
+```
+├── src/
+│   ├── components/
+│   │   ├── game/          # Game-specific components
+│   │   └── ui/            # Reusable UI components
+│   ├── pages/             # Route pages
+│   ├── hooks/             # Custom React hooks
+│   ├── lib/               # Utility functions
+│   └── assets/            # Images and static assets
+├── public/                # Public static files
+└── index.html             # Entry HTML file
 ```
 
-**Edit a file directly in GitHub**
+## Development
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Available Scripts
 
-**Use GitHub Codespaces**
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Deployment
 
-## What technologies are used for this project?
+This project can be easily deployed using [Lovable](https://lovable.dev). Simply click on Share → Publish in your Lovable project.
 
-This project is built with:
+Alternatively, you can deploy to any static hosting service (Vercel, Netlify, etc.) by running:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```sh
+npm run build
+```
 
-## How can I deploy this project?
+## Roadmap
 
-Simply open [Lovable](https://lovable.dev/projects/c2e57b3d-fd0d-4dc8-9223-33dbbf9041a5) and click on Share -> Publish.
+- [ ] Grade 1 content implementation
+- [ ] Secure authentication system
+- [ ] Progress tracking and analytics
+- [ ] Interactive math tools (number lines, fraction bars)
+- [ ] Daily missions and challenges
+- [ ] Parent dashboard
+- [ ] Multi-language support
 
-## Can I connect a custom domain to my Lovable project?
+## Contributing
 
-Yes, you can!
+This is an educational project. For suggestions or contributions, please open an issue or contact the project maintainer.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## License
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project is part of an educational initiative aligned with Massachusetts Curriculum Frameworks.
+
+## Credits
+
+**Made by: Amier Ibrahim**
+
+---
+
+Built with ❤️ using [Lovable](https://lovable.dev)

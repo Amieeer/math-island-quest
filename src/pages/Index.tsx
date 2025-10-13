@@ -18,6 +18,7 @@ const Index = () => {
             </span>
           </div>
           <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground hidden sm:block">Made by: Amier Ibrahim</span>
             <Button variant="ghost">
               For Parents
             </Button>
