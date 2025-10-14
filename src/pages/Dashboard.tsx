@@ -4,6 +4,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { WorldMap } from "@/components/game/WorldMap";
 import { Button } from "@/components/ui/button";
 import { Anchor, LogOut } from "lucide-react";
+import { XPProgressBar } from "@/components/dashboard/XPProgressBar";
+import { ActivityHeatmap } from "@/components/dashboard/ActivityHeatmap";
 
 export default function Dashboard() {
   const { user, profile, loading, signOut } = useAuth();
@@ -56,7 +58,14 @@ export default function Dashboard() {
       </nav>
 
       {/* Main Content */}
-      <div className="pt-20">
+      <div className="pt-20 pb-8">
+        {/* Dashboard Stats */}
+        <div className="max-w-7xl mx-auto px-4 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <XPProgressBar />
+          <ActivityHeatmap />
+        </div>
+
+        {/* World Map */}
         <WorldMap />
       </div>
     </div>

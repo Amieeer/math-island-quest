@@ -7,6 +7,8 @@ interface Profile {
   user_id: string;
   username: string;
   grade: number;
+  xp: number | null;
+  level: number | null;
 }
 
 interface AuthContextType {

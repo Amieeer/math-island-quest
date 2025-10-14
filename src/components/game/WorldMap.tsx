@@ -22,6 +22,9 @@ import { useNavigate } from "react-router-dom";
 import island1 from "@/assets/island-1.png";
 import island2 from "@/assets/island-2.png";
 import island3 from "@/assets/island-3.png";
+import grade4Mine from "@/assets/grade4-mine.jpg";
+import grade5Space from "@/assets/grade5-space.jpg";
+import grade6Lab from "@/assets/grade6-lab.jpg";
 
 interface Island {
   id: string;
@@ -77,7 +80,7 @@ const baseIslands: Island[] = [
     grade: 4,
     domain: "Number & Operations in Base Ten",
     status: "unlocked",
-    image: island1,
+    image: grade4Mine,
     stars: 0,
   },
   {
@@ -88,7 +91,7 @@ const baseIslands: Island[] = [
     grade: 5,
     domain: "Number & Operations—Fractions",
     status: "unlocked",
-    image: island2,
+    image: grade5Space,
     stars: 0,
   },
   {
@@ -99,7 +102,7 @@ const baseIslands: Island[] = [
     grade: 6,
     domain: "Ratios and Proportional Relationships",
     status: "unlocked",
-    image: island3,
+    image: grade6Lab,
     stars: 0,
   },
 ];
