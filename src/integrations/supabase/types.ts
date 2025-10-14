@@ -19,25 +19,31 @@ export type Database = {
           created_at: string
           grade: number
           id: string
+          level: number | null
           updated_at: string
           user_id: string
           username: string
+          xp: number | null
         }
         Insert: {
           created_at?: string
           grade: number
           id?: string
+          level?: number | null
           updated_at?: string
           user_id: string
           username: string
+          xp?: number | null
         }
         Update: {
           created_at?: string
           grade?: number
           id?: string
+          level?: number | null
           updated_at?: string
           user_id?: string
           username?: string
+          xp?: number | null
         }
         Relationships: []
       }
@@ -76,7 +82,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      calculate_level_xp: {
+        Args: {
+          p_difficulty: string
+          p_score: number
+          p_total_problems: number
+        }
+        Returns: number
+      }
+      calculate_next_level_xp: {
+        Args: { current_level: number }
+        Returns: number
+      }
+      update_user_xp: {
+        Args: { p_user_id: string; p_xp_earned: number }
+        Returns: {
+          level_up: boolean
+          new_level: number
+          new_xp: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
