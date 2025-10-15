@@ -54,16 +54,21 @@ export const useProgress = () => {
     if (!user) return null;
 
     try {
-      // Save progress first
+      // Save progress first - upsert with conflict resolution
       const { error: progressError } = await supabase
         .from("progress")
-        .upsert({
-          user_id: user.id,
-          level_id: levelId,
-          grade: grade,
-          difficulty: difficulty,
-          score: score,
-        });
+        .upsert(
+          {
+            user_id: user.id,
+            level_id: levelId,
+            grade: grade,
+            difficulty: difficulty,
+            score: score,
+          },
+          {
+            onConflict: 'user_id,level_id'
+          }
+        );
 
       if (progressError) {
         console.error("Error saving progress:", progressError);
