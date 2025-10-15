@@ -20,7 +20,7 @@ interface LocationState {
 export default function LevelSummary() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, profile } = useAuth();
+  const { user, profile, refetchProfile } = useAuth();
   const { saveProgress } = useProgress();
   const state = location.state as LocationState;
   const [showLevelUpModal, setShowLevelUpModal] = useState(false);
@@ -50,11 +50,14 @@ export default function LevelSummary() {
         });
         setShowLevelUpModal(true);
       }
+      
+      // Refetch profile to update XP and level in dashboard
+      await refetchProfile();
       setProgressSaved(true);
     };
 
     handleSaveProgress();
-  }, [state, user, navigate, saveProgress, progressSaved]);
+  }, [state, user, navigate, saveProgress, progressSaved, refetchProfile]);
 
   if (!state) {
     return null;
@@ -160,12 +163,18 @@ export default function LevelSummary() {
                     Back to Map
                   </Button>
                   <Button
-                    onClick={() => navigate("/dashboard")}
+                    onClick={() => navigate("/game", {
+                      state: {
+                        levelId: state.levelId,
+                        grade: state.grade,
+                        difficulty: state.difficulty,
+                      },
+                    })}
                     size="lg"
                     className="flex-1"
                   >
                     <RotateCcw className="w-5 h-5 mr-2" />
-                    Try Again
+                    Replay Level
                   </Button>
                 </>
               ) : nextDifficulty ? (

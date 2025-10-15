@@ -19,6 +19,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, username: string, grade: number) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
+  refetchProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,6 +29,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const fetchProfile = async (userId: string) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("user_id", userId)
+      .single();
+    setProfile(data);
+  };
 
   useEffect(() => {
     // Set up auth state listener
@@ -39,12 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (session?.user) {
           // Fetch profile after auth state changes
           setTimeout(async () => {
-            const { data } = await supabase
-              .from("profiles")
-              .select("*")
-              .eq("user_id", session.user.id)
-              .single();
-            setProfile(data);
+            await fetchProfile(session.user.id);
           }, 0);
         } else {
           setProfile(null);
@@ -58,15 +63,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        supabase
-          .from("profiles")
-          .select("*")
-          .eq("user_id", session.user.id)
-          .single()
-          .then(({ data }) => {
-            setProfile(data);
-            setLoading(false);
-          });
+        fetchProfile(session.user.id).then(() => {
+          setLoading(false);
+        });
       } else {
         setLoading(false);
       }
@@ -74,6 +73,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const refetchProfile = async () => {
+    if (user) {
+      await fetchProfile(user.id);
+    }
+  };
 
   const signUp = async (email: string, password: string, username: string, grade: number) => {
     const { data, error } = await supabase.auth.signUp({
@@ -113,7 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, profile, loading, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, session, profile, loading, signUp, signIn, signOut, refetchProfile }}>
       {children}
     </AuthContext.Provider>
   );
