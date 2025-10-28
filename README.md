@@ -33,12 +33,12 @@ Math Island Adventure transforms mathematics learning into an exciting journey t
 
 1. Clone the repository
    ```sh
-   git clone <https://github.com/Amieeer/math-island-quest>
+   git clone https://github.com/Amieeer/math-island-quest
    ```
 
 2. Navigate to the project directory
    ```sh
-   cd <https://github.com/Amieeer/math-island-quest>
+   cd https://github.com/Amieeer/math-island-quest
    ```
 
 3. Install dependencies
