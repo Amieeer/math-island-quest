@@ -13,6 +13,7 @@ Math Island Adventure transforms mathematics learning into an exciting journey t
 - **Icons:** Lucide React
 - **State Management:** TanStack Query, Zustand (planned)
 - **Animations:** Framer Motion (planned)
+- **Backend** Supabase
 
 ## Features
 
