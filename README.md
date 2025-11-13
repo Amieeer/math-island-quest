@@ -80,9 +80,7 @@ Math Island Adventure transforms mathematics learning into an exciting journey t
 
 ## Deployment
 
-This project can be easily deployed using [Lovable](https://lovable.dev). Simply click on Share → Publish in your Lovable project.
-
-Alternatively, you can deploy to any static hosting service (Vercel, Netlify, etc.) by running:
+ you can deploy to any static hosting service (Vercel, Netlify, etc.) by running:
 
 ```sh
 npm run build
@@ -110,6 +108,4 @@ This project is part of an educational initiative aligned with Massachusetts Cur
 
 **Made by: Amier Ibrahim**
 
----
 
-Built with ❤️ using [Lovable](https://lovable.dev)
